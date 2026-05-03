@@ -1,0 +1,91 @@
+<div *ngIf="currentMessage; else noMessage" class="h-100">
+  <div class="card border-0 shadow-sm h-100">
+    <div class="card-header bg-white border-bottom">
+      <div class="d-flex justify-content-between align-items-start">
+        <h4 class="mb-0 text-dark fw-bold">{{ currentMessage.title }}</h4>
+      </div>
+    </div>
+    
+    <div class="card-body">
+      <!-- Message Metadata -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="bg-light rounded p-3">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-user text-primary me-2"></i>
+                  <div>
+                    <small class="text-muted d-block">From</small>
+                    <span 
+                      class="fw-medium"
+                      [class.text-muted]="currentMessage?.from && typeof currentMessage.from === 'object' && isDeletedUser(currentMessage.from)" 
+                      [style.text-decoration]="currentMessage?.from && typeof currentMessage.from === 'object' && isDeletedUser(currentMessage.from) ? 'line-through' : 'none'"
+                    >
+                      {{ getFromUsername(currentMessage) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-users text-primary me-2"></i>
+                  <div>
+                    <small class="text-muted d-block">To</small>
+                    <span *ngIf="isArray(currentMessage?.to)">
+                      <span *ngFor="let recipient of getRecipientsArray(currentMessage); let last = last">
+                        <span 
+                          class="fw-medium"
+                          [class.text-muted]="recipient && typeof recipient === 'object' && isDeletedUser(recipient)" 
+                          [style.text-decoration]="recipient && typeof recipient === 'object' && isDeletedUser(recipient) ? 'line-through' : 'none'"
+                        >
+                          <ng-container *ngIf="recipient && typeof recipient === 'object' && recipient.username; else showString">
+                            {{ recipient.username || 'Deleted User' }}
+                          </ng-container>
+                          <ng-template #showString>
+                            {{ recipient || 'Deleted User' }}
+                          </ng-template>
+                        </span>
+                        <span *ngIf="!last">, </span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-clock text-primary me-2"></i>
+                  <div>
+                    <small class="text-muted d-block">Sent At</small>
+                    <span class="fw-medium">{{ currentMessage?.sentAt | date:'medium' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message Content -->
+      <div class="mb-4">
+        <h6 class="text-dark fw-semibold mb-3">
+          <i class="fas fa-file-text me-2 text-primary"></i>
+          Message Content
+        </h6>
+        <div class="bg-white border rounded p-4" style="min-height: 200px;">
+          <p class="mb-0" style="white-space: pre-line; line-height: 1.6;">{{ currentMessage?.content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noMessage>
+  <div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="text-center text-muted">
+      <i class="fas fa-envelope-open fa-4x mb-3"></i>
+      <h5 class="mb-2">No Message Selected</h5>
+      <p class="mb-0">Select a message from the list to view its details.</p>
+    </div>
+  </div>
+</ng-template>

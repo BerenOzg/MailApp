@@ -1,0 +1,78 @@
+<div class="container-fluid">
+  <!-- Header Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0 text-dark fw-semibold">
+          <i class="fas fa-user-plus me-2 text-danger"></i>
+          Add New User
+        </h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Card -->
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom">
+          <h5 class="mb-0 text-dark fw-semibold">
+            <i class="fas fa-user-plus me-2 text-primary"></i>
+            Create New User Account
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+              <i class="fas fa-user-plus text-white" style="font-size: 2rem;"></i>
+            </div>
+            <h5 class="mb-2">Add New User</h5>
+            <p class="text-muted mb-0">Create a new user account with the required information.</p>
+          </div>
+
+          <div class="d-grid">
+            <button 
+              class="btn btn-success btn-lg fw-semibold" 
+              (click)="showForm = true"
+            >
+              <i class="fas fa-user-plus me-2"></i>
+              Add New User
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div *ngIf="showForm" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-user-plus me-2 text-success"></i>
+          Add New User
+        </h5>
+        <button 
+          type="button" 
+          class="btn-close" 
+          (click)="showForm = false"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-user-form (ngSubmit)="onAddComplete()"></app-user-form>
+      </div>
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="showForm = false"
+        >
+          <i class="fas fa-times me-1"></i>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,161 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0 text-dark fw-semibold">
+          <i class="fas fa-users me-2 text-danger"></i>
+          User Management
+        </h4>
+        <div class="d-flex gap-2">
+          <span class="badge bg-primary">{{ users?.length || 0 }} Users</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-muted mb-2">
+                <i class="fas fa-search me-1"></i>
+                Quick Search Users
+              </label>
+              <app-typeahead-search
+                [options]="typeaheadOptions"
+                placeholder="Search by username or email..."
+                [minSearchLength]="2"
+                [maxResults]="8"
+                (search)="onTypeaheadSearch($event)"
+                (optionSelected)="onTypeaheadOptionSelected($event)"
+              ></app-typeahead-search>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Type to search users by username or email. Use arrow keys to navigate, Enter to select.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-end h-100">
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-secondary" (click)="retrieveUsers()">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    Refresh
+                  </button>
+                  <button class="btn btn-outline-primary" (click)="username = ''; searchUsername()">
+                    <i class="fas fa-times me-1"></i>
+                    Clear
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white border-bottom">
+          <h5 class="mb-0 text-dark fw-semibold">
+            <i class="fas fa-list me-2 text-danger"></i>
+            Users ({{ users?.length || 0 }})
+          </h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="list-group list-group-flush">
+            <div
+              class="list-group-item list-group-item-action border-0 py-3 px-4 cursor-pointer"
+              *ngFor="let user of users || []; let i = index"
+              [class.active]="i === currentIndex"
+              (click)="setActiveUser(user, i)"
+              style="cursor: pointer;"
+            >
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <i class="fas fa-user text-white"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-1 fw-semibold">{{ user.username }}</h6>
+                    <small class="text-muted">{{ user.email }}</small>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge" [class]="user.isAdmin ? 'bg-danger' : 'bg-primary'">
+                    {{ user.isAdmin ? 'Admin' : 'User' }}
+                  </span>
+                  <button 
+                    *ngIf="canDeleteUser(user)"
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="deleteUser(user, $event)"
+                    title="Delete user"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                  <span *ngIf="!canDeleteUser(user)" class="text-muted small">
+                    <i class="fas fa-shield-alt me-1"></i>
+                    Current
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="!users || users.length === 0" class="text-center py-5">
+            <div class="text-muted">
+              <i class="fas fa-users fa-3x mb-3"></i>
+              <p class="mb-0">No users found.</p>
+              <small>No users match your search criteria.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Details -->
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white border-bottom">
+          <h5 class="mb-0 text-dark fw-semibold">
+            <i class="fas fa-user me-2 text-danger"></i>
+            User Details
+          </h5>
+        </div>
+        <div class="card-body">
+          <app-user-details [currentUser]="currentUser" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <nav aria-label="Users pagination">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="page === 0">
+            <button class="page-link" (click)="goToPage(page - 1)" [disabled]="page === 0">
+              <i class="fas fa-chevron-left me-1"></i>
+              Previous
+            </button>
+          </li>
+          <li class="page-item active">
+            <span class="page-link">
+              Page {{ page + 1 }} of {{ totalPages }}
+            </span>
+          </li>
+          <li class="page-item" [class.disabled]="page + 1 >= totalPages">
+            <button class="page-link" (click)="goToPage(page + 1)" [disabled]="page + 1 >= totalPages">
+              Next
+              <i class="fas fa-chevron-right ms-1"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

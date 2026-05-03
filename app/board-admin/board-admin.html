@@ -1,0 +1,63 @@
+<div class="d-flex vh-100 bg-light">
+  <!-- Admin Sidebar -->
+  <div class="bg-dark text-white" style="width: 280px; min-width: 280px;">
+    <div class="p-4 border-bottom border-secondary">
+      <div class="d-flex align-items-center">
+        <div class="bg-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+          <i class="fas fa-shield-alt text-white"></i>
+        </div>
+        <h4 class="mb-0 fw-bold">Admin Panel</h4>
+      </div>
+    </div>
+    
+    <nav class="p-3">
+      <div class="d-grid gap-2">
+        <button 
+          class="btn btn-outline-light text-start d-flex align-items-center py-3 px-3" 
+          [class.active]="selectedTab === 'users'" 
+          (click)="navigateTo('users')"
+        >
+          <i class="fas fa-users me-3"></i>
+          <span class="fw-medium">User Management</span>
+        </button>
+        <button 
+          class="btn btn-outline-light text-start d-flex align-items-center py-3 px-3" 
+          [class.active]="selectedTab === 'add'" 
+          (click)="navigateTo('add')"
+        >
+          <i class="fas fa-user-plus me-3"></i>
+          <span class="fw-medium">Add New User</span>
+        </button>
+        <button 
+          class="btn btn-outline-light text-start d-flex align-items-center py-3 px-3" 
+          [class.active]="selectedTab === 'messages'" 
+          (click)="navigateTo('messages')"
+        >
+          <i class="fas fa-envelope me-3"></i>
+          <span class="fw-medium">Message Management</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-grow-1 d-flex flex-column">
+    <div class="bg-white border-bottom px-4 py-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-dark fw-semibold">
+          <i class="fas fa-users me-2 text-danger" *ngIf="selectedTab === 'users'"></i>
+          <i class="fas fa-user-plus me-2 text-danger" *ngIf="selectedTab === 'add'"></i>
+          <i class="fas fa-envelope me-2 text-danger" *ngIf="selectedTab === 'messages'"></i>
+          {{ selectedTab | titlecase }} Management
+        </h5>
+        <div class="d-flex gap-2">
+          <span class="badge bg-danger">Administrator</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex-grow-1 p-4 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

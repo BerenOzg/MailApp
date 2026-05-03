@@ -1,0 +1,36 @@
+<div>
+    <div class="col-md-8">
+        <div class="col-12 mb-3">
+            <app-filter-menu (filtersChanged)="onFiltersChanged($event)"/>
+        </div>
+        <div class="input-group mb-3">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Search by title"
+                [(ngModel)]="title"
+            />
+            <div class="input-group-append">
+                <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="searchTitle()"
+                >
+                    Search
+                </button>    
+            </div>
+        </div>
+    </div>
+    <app-mail-list 
+      [messages]="messages"
+      [page]="page"
+      [size]="size"
+      [totalPages]="totalPages"
+      [fetchPage]="fetchPage"
+    ></app-mail-list>
+</div>
+<div class="pagination">
+  <button (click)="fetchPage(page - 1)" [disabled]="page === 0">Previous</button>
+  <span>Page {{ page + 1 }} of {{ totalPages }}</span>
+  <button (click)="fetchPage(page + 1)" [disabled]="page + 1 >= totalPages">Next</button>
+</div>

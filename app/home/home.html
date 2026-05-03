@@ -1,0 +1,60 @@
+<div class="d-flex vh-100 bg-light">
+  <!-- Sidebar -->
+  <div class="bg-dark text-white" style="width: 280px; min-width: 280px;">
+    <div class="p-4 border-bottom border-secondary">
+      <div class="d-flex align-items-center">
+        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+          <i class="fas fa-envelope text-white"></i>
+        </div>
+        <h4 class="mb-0 fw-bold">MailApp</h4>
+      </div>
+    </div>
+    
+    <nav class="p-3">
+      <div class="d-grid gap-2">
+        <button 
+          class="btn btn-outline-light text-start d-flex align-items-center py-3 px-3" 
+          [class.active]="selectedTab === 'inbox'" 
+          (click)="navigateTo('inbox')"
+        >
+          <i class="fas fa-inbox me-3"></i>
+          <span class="fw-medium">Inbox</span>
+        </button>
+        <button 
+          class="btn btn-outline-light text-start d-flex align-items-center py-3 px-3" 
+          [class.active]="selectedTab === 'outbox'" 
+          (click)="navigateTo('outbox')"
+        >
+          <i class="fas fa-paper-plane me-3"></i>
+          <span class="fw-medium">Outbox</span>
+        </button>
+        <button 
+          class="btn btn-outline-light text-start d-flex align-items-center py-3 px-3" 
+          [class.active]="selectedTab === 'draft'" 
+          (click)="navigateTo('draft')"
+        >
+          <i class="fas fa-edit me-3"></i>
+          <span class="fw-medium">Drafts</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-grow-1 d-flex flex-column">
+    <div class="bg-white border-bottom px-4 py-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-dark fw-semibold">
+          <i class="fas fa-inbox me-2 text-primary" *ngIf="selectedTab === 'inbox'"></i>
+          <i class="fas fa-paper-plane me-2 text-primary" *ngIf="selectedTab === 'outbox'"></i>
+          <i class="fas fa-edit me-2 text-primary" *ngIf="selectedTab === 'draft'"></i>
+          {{ selectedTab | titlecase }}
+        </h5>
+      </div>
+    </div>
+    
+    <div class="flex-grow-1 p-4 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

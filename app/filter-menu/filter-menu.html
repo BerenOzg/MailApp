@@ -1,0 +1,107 @@
+<div class="row g-2">
+  <div class="col-md-4">
+    <div class="input-group">
+      <span class="input-group-text bg-light">
+        <i class="fas fa-filter text-muted"></i>
+      </span>
+      <input 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="value" 
+        placeholder="Enter filter value..." 
+        (keyup.enter)="applyFilter()"
+      />
+    </div>
+  </div>
+  
+  <div class="col-md-8">
+    <div class="d-flex flex-wrap gap-2">
+      <div class="btn-group" role="group">
+        <button 
+          class="btn btn-outline-primary btn-sm" 
+          (click)="updateConditions('dateFrom')"
+          title="Filter by date from"
+        >
+          <i class="fas fa-calendar-plus me-1"></i>
+          Date From
+        </button>
+        <button 
+          class="btn btn-outline-primary btn-sm" 
+          (click)="updateConditions('dateTo')"
+          title="Filter by date to"
+        >
+          <i class="fas fa-calendar-minus me-1"></i>
+          Date To
+        </button>
+      </div>
+      
+      <div class="btn-group" role="group">
+        <button 
+          class="btn btn-outline-info btn-sm" 
+          (click)="updateConditions('sender')"
+          title="Filter by sender"
+        >
+          <i class="fas fa-user me-1"></i>
+          Sender
+        </button>
+        <button 
+          class="btn btn-outline-info btn-sm" 
+          (click)="updateConditions('recipient')"
+          title="Filter by recipient"
+        >
+          <i class="fas fa-users me-1"></i>
+          Recipient
+        </button>
+      </div>
+      
+      <div class="btn-group" role="group">
+        <button 
+          class="btn btn-outline-success btn-sm" 
+          (click)="updateConditions('title')"
+          title="Filter by title"
+        >
+          <i class="fas fa-heading me-1"></i>
+          Title
+        </button>
+        <button 
+          class="btn btn-outline-success btn-sm" 
+          (click)="updateConditions('content')"
+          title="Filter by content"
+        >
+          <i class="fas fa-file-text me-1"></i>
+          Content
+        </button>
+      </div>
+      
+      <button 
+        class="btn btn-outline-secondary btn-sm" 
+        (click)="updateConditions('reset')"
+        title="Reset all filters"
+      >
+        <i class="fas fa-undo me-1"></i>
+        Reset
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Active Filters Display -->
+<div *ngIf="hasActiveConditions" class="mt-3">
+  <div class="d-flex align-items-center mb-2">
+    <small class="text-muted fw-semibold me-2">Active Filters:</small>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <span 
+      *ngFor="let condition of getActiveConditions()" 
+      class="badge bg-primary d-flex align-items-center"
+    >
+      <i class="fas fa-tag me-1"></i>
+      {{ condition.key }}: {{ condition.value }}
+      <button 
+        class="btn-close btn-close-white ms-2" 
+        (click)="removeCondition(condition.key)"
+        style="font-size: 0.5rem;"
+      ></button>
+    </span>
+  </div>
+</div>

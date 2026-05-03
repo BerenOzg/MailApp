@@ -1,0 +1,112 @@
+<div class="container-fluid">
+  <!-- Header Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0 text-dark fw-semibold">
+          <i class="fas fa-envelope me-2 text-danger"></i>
+          Message Management
+        </h4>
+        <div class="d-flex gap-2">
+          <span class="badge bg-primary">{{ messages?.length || 0 }} Messages</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-muted mb-2">
+                <i class="fas fa-search me-1"></i>
+                Quick Search Messages
+              </label>
+              <app-typeahead-search
+                [options]="typeaheadOptions"
+                placeholder="Search by message title..."
+                [minSearchLength]="2"
+                [maxResults]="8"
+                (search)="onTypeaheadSearch($event)"
+                (optionSelected)="onTypeaheadOptionSelected($event)"
+              ></app-typeahead-search>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Type to search messages by title. Use arrow keys to navigate, Enter to select.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-end h-100">
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-secondary" (click)="retrievemessages()">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    Refresh
+                  </button>
+                  <button class="btn btn-outline-primary" (click)="title = ''; searchTitle()">
+                    <i class="fas fa-times me-1"></i>
+                    Clear
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Advanced Filters -->
+          <div class="row mt-3">
+            <div class="col-12">
+              <hr class="my-3">
+              <label class="form-label fw-semibold text-muted mb-2">
+                <i class="fas fa-filter me-1"></i>
+                Advanced Filters
+              </label>
+              <app-filter-menu (filtersChanged)="onFiltersChanged($event)"></app-filter-menu>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages List -->
+  <div class="row">
+    <div class="col-12">
+      <app-mail-list
+        [messages]="messages"
+        [page]="page"
+        [size]="size"
+        [totalPages]="totalPages"
+        [fetchPage]="fetchPage"
+      ></app-mail-list>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <nav aria-label="Messages pagination">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="page === 0">
+            <button class="page-link" (click)="fetchPage(page - 1)" [disabled]="page === 0">
+              <i class="fas fa-chevron-left me-1"></i>
+              Previous
+            </button>
+          </li>
+          <li class="page-item active">
+            <span class="page-link">
+              Page {{ page + 1 }} of {{ totalPages }}
+            </span>
+          </li>
+          <li class="page-item" [class.disabled]="page + 1 >= totalPages">
+            <button class="page-link" (click)="fetchPage(page + 1)" [disabled]="page + 1 >= totalPages">
+              Next
+              <i class="fas fa-chevron-right ms-1"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
